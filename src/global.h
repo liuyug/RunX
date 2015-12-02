@@ -1,0 +1,11 @@
+#ifndef __GLOBAL_H___
+#define __GLOBAL_H___
+
+
+#define MAX_BUFFER 4096
+#define WM_RUNIT_TRAYNOTIFY      WM_USER+100
+#define WM_RUNIT_ACNOTIFY_TEXT   WM_USER+101
+#define WM_RUNIT_ACNOTIFY_CLEAR  WM_USER+102
+#define WM_RUNIT_RUNCMD          WM_USER+103
+
+#endif
