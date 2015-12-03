@@ -26,8 +26,8 @@ WNDPROC oldInputWndProc;
 
 const TCHAR * GetRandomTip()
 {
-    //srand( (unsigned)time( NULL ) );
-    int u = (int)(rand() / (RAND_MAX + 1) * 2);
+	int max_tips = sizeof(Tips) / sizeof(TCHAR *) - 1;
+	int u = rand() * max_tips / (RAND_MAX + 1);
     debug_output(_T("Random tip: %d\n"),u);
     return Tips[u];
 }
@@ -49,6 +49,7 @@ LRESULT CALLBACK InputWindowWndProc(HWND hwnd, UINT message, WPARAM wParam, LPAR
         case 'U':
             if(HIBYTE(GetKeyState(VK_CONTROL))){
                 SendMessage(hAutoCompletion,WM_RUNIT_ACNOTIFY_CLEAR,0,0);
+				Edit_GetText(hwnd,cmdString,MAX_BUFFER);
                 GetKeyNameText(lParam,cmdString+_tcslen(cmdString)+1,MAX_BUFFER);
                 debug_output(_T("cmd:%s + %s\n"),cmdString,cmdString+_tcslen(cmdString)+1);
                 // select from 0 to current caret
@@ -128,7 +129,9 @@ HWND CreateInputWindow(HWND parent,int margin)
 {
 
     int Width=GetSystemMetrics(SM_CXSCREEN)/2;
-    int Height=22;//GetSystemMetrics(SM_CYCAPTION); 20
+	LOGFONT lf;
+	GetObject(hRunitFont, sizeof(lf), &lf);
+    int Height=-lf.lfHeight + margin * 2 + 2 /* border */;
     debug_output(_T("input size: %dx%d\n"),Width,Height);
     HWND hWnd=CreateWindow(_T("EDIT"),_T(""),WS_CHILD|WS_VISIBLE|WS_BORDER ,
                              margin,margin,Width,Height,

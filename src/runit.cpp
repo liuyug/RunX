@@ -93,7 +93,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
     LOGFONT logFont;
     memset(&logFont,0,sizeof(logFont));
-    logFont.lfHeight=-MulDiv(11, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72);
+    logFont.lfHeight=-MulDiv(fontSize, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72);
     debug_output(_T("font height:%ld\n"),logFont.lfHeight);
     //logFont.lfWeight=FW_NORMAL;
     logFont.lfWeight=FW_BOLD;
@@ -179,7 +179,7 @@ void CalcMainWindowPos(HWND hwnd,int margin)
     winSize.cy=clientSize.cy+margin*2+GetSystemMetrics(SM_CYBORDER)*2;
     SetWindowPos(hwnd,HWND_BOTTOM,
                  (screenSize.cx-winSize.cx)/2,
-                 (screenSize.cy-winSize.cy)/2,
+                 (screenSize.cy-winSize.cy)/3,
                  winSize.cx,
                  winSize.cy,
                  SWP_FRAMECHANGED|SWP_NOZORDER);

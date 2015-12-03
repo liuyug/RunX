@@ -18,6 +18,7 @@ extern unsigned int  HK_Key;
 extern ATOM ID_HOTKEY;
 extern TCHAR szTitle[256];
 
+#define fontSize	32
 
 void ShowAbout(HWND hWnd);
 void ShowHelp(HWND hWnd);
