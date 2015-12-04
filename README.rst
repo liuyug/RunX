@@ -21,4 +21,25 @@ Run
 
     runit.exe
 
-default hot key is ``insert``.
+Usage
+=======
+Press default hot key ``insert`` to popup window.
+
+Internal command::
+
+    /about
+    /config
+    /edithosts
+    /eject <disk>
+    /lock
+    /logoff
+    /quit
+    /restart
+    /runas <application>
+    /runscreensaver
+    /shutdisplay
+    /shutdown
+    /syserr <error code>
+    /url <link>
+
+Input ``/config`` for more settings.
