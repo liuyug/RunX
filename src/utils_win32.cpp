@@ -452,7 +452,7 @@ int EjectDisk(const TCHAR * drive)
     return 1;
 }
 
-int GetFilesDialog(HWND hWnd,TCHAR *files)
+int GetFilesDialog(HWND hWnd,TCHAR *files, size_t length)
 {
     OPENFILENAME ofn;
     ZeroMemory(&ofn, sizeof(ofn));
@@ -462,7 +462,9 @@ int GetFilesDialog(HWND hWnd,TCHAR *files)
     // Set lpstrFile[0] to '\0' so that GetOpenFileName does not
     // use the contents of szFile to initialize itself.
     ofn.lpstrFile[0] = _T('\0');
-    ofn.nMaxFile = sizeof(files);
+	// don't get array size??
+    // ofn.nMaxFile = sizeof(files);
+	ofn.nMaxFile = length;
     ofn.lpstrFilter = _T("All files (*.*)\0*.*\0Exe files (*.exe)\0*.exe\0\0");
     ofn.nFilterIndex = 1;
     ofn.lpstrFileTitle = NULL;
@@ -479,7 +481,7 @@ int GetFilesDialog(HWND hWnd,TCHAR *files)
     files[1]=_T('\0');
     return 1;
 }
-int GetDirectoryDialog(HWND hWnd,TCHAR *dir)
+int GetDirectoryDialog(HWND hWnd,TCHAR *dir, size_t length)
 {
     BROWSEINFO bi;
     memset(&bi,0,sizeof(bi));
@@ -489,8 +491,10 @@ int GetDirectoryDialog(HWND hWnd,TCHAR *dir)
     ITEMIDLIST *idList;
     idList=SHBrowseForFolder(&bi);
     if(idList>0){
-        SHGetPathFromIDList(idList,dir);
+		TCHAR path[MAX_PATH];
+        SHGetPathFromIDList(idList, path);
         CoTaskMemFree(idList);
+		_tcscpy_s(dir, length, path);
         return 0;
     }
     dir[0]=_T('\0');

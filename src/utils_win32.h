@@ -41,8 +41,8 @@ int strwildcardcmp(const TCHAR *str,const TCHAR *wildcard,int igcase);
 
 int EjectDisk(const TCHAR * drive);
 
-int GetFilesDialog(HWND hWnd,TCHAR *files);
-int GetDirectoryDialog(HWND hWnd,TCHAR *dir);
+int GetFilesDialog(HWND hWnd,TCHAR * files, size_t length);
+int GetDirectoryDialog(HWND hWnd,TCHAR * dir, size_t length);
 
 void DisableScreenSaver(int disable);
 int IsConsoleApp(const TCHAR *path);

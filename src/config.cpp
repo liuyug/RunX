@@ -356,7 +356,7 @@ INT_PTR CALLBACK DlgPathsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
             DeleteSelPaths(GetDlgItem(hwnd,IDC_LIST_PATH));
             return 1;
         case IDC_BUTTON_BROWSE:
-            GetDirectoryDialog(hwnd,path);
+            GetDirectoryDialog(hwnd, path, MAX_BUFFER);
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_PATH),path);
             return 1;
         case IDC_BUTTON_UPDATEFILES:
@@ -408,7 +408,7 @@ INT_PTR CALLBACK DlgPathsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
             SetCursor(hCursor);
             return 1;
         case IDC_BUTTON_BROWSEFILE:
-            GetFilesDialog(hwnd,path);
+            GetFilesDialog(hwnd, path, MAX_BUFFER);
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_SINGLEFILE),path);
             quickey_genkey(path,key);
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_SINGLEKEY),key);
