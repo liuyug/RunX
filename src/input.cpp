@@ -51,7 +51,7 @@ LRESULT CALLBACK InputWindowWndProc(HWND hwnd, UINT message, WPARAM wParam, LPAR
                 SendMessage(hAutoCompletion,WM_RUNIT_ACNOTIFY_CLEAR,0,0);
 				Edit_GetText(hwnd,cmdString,MAX_BUFFER);
                 GetKeyNameText(lParam,cmdString+_tcslen(cmdString)+1,MAX_BUFFER);
-                debug_output(_T("cmd:%s + %s\n"),cmdString,cmdString+_tcslen(cmdString)+1);
+                debug_output(_T("cmd:%s Ctrl + %s\n"),cmdString,cmdString+_tcslen(cmdString)+1);
                 // select from 0 to current caret
                 SendMessage(hwnd,EM_SETSEL,0,HIWORD(SendMessage(hwnd,EM_GETSEL,0,0)));
                 // clear selecting area
@@ -60,6 +60,8 @@ LRESULT CALLBACK InputWindowWndProc(HWND hwnd, UINT message, WPARAM wParam, LPAR
             }
             return 1;
         case VK_RETURN:
+			// select first match item automatically
+			AC_SelectNextItem(hwnd,0);
             Edit_GetText(hwnd,cmdString,MAX_BUFFER);
             SendMessage(GetParent(hwnd),WM_RUNIT_RUNCMD,0,(LPARAM)cmdString);
             SendMessage(hwnd,EM_SETCUEBANNER,TRUE,(LPARAM)GetRandomTip());
