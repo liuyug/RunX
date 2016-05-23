@@ -408,7 +408,9 @@ INT_PTR CALLBACK DlgPathsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
             SetCursor(hCursor);
             return 1;
         case IDC_BUTTON_BROWSEFILE:
-            GetFilesDialog(hwnd, path, MAX_BUFFER);
+			path[0] = _T('"');
+            GetFilesDialog(hwnd, path + 1, MAX_BUFFER);
+			_tcscat_s(path, _T("\""));
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_SINGLEFILE),path);
             quickey_genkey(path,key);
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_SINGLEKEY),key);
