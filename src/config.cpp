@@ -89,7 +89,8 @@ void DoAutoStart()
     }
     if(AutoStart>0) {
         GetModuleFileName(NULL,Value,MAX_BUFFER);
-        reg_ret=RegSetValueEx(hKey,Name,0,REG_SZ,(BYTE*)Value,_tcslen(Value));
+		debug_errmsg(_T("GetModuleFileName"), Value);
+        reg_ret=RegSetValueEx(hKey,Name,0,REG_SZ,(BYTE*)Value,_tcslen(Value) * sizeof(TCHAR));
     } else {
         reg_ret=RegDeleteValue(hKey,Name);
     }
