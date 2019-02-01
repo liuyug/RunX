@@ -13,7 +13,7 @@
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif
 
-bool _trace(TCHAR *format, ...);
+bool _trace(const TCHAR *format, ...);
 #define debug_output                _trace
 #ifdef NDEBUG
 #define debug                       ((void)0)

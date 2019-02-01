@@ -386,16 +386,17 @@ INT_PTR CALLBACK DlgPathsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
         case IDC_BUTTON_ADDSTARTMENU:
             hCursor=LoadCursor(NULL,IDC_WAIT);
             SetCursor(hCursor);
+
             SHGetSpecialFolderPath(NULL,path,CSIDL_APPDATA,0);
             _tcscat_s(path,_T("\\Microsoft\\Internet Explorer\\Quick Launch"));
             quickey_addfilesfrompath(path,_T("*.lnk"),1);
-            //ListBox_AddString(GetDlgItem(hwnd,IDC_LIST_PATH),path);
-            SHGetSpecialFolderPath(NULL,path,CSIDL_PROGRAMS,0);
+
+            SHGetSpecialFolderPath(NULL,path,CSIDL_STARTMENU,0);
             quickey_addfilesfrompath(path,_T("*.lnk"),1);
-            //ListBox_AddString(GetDlgItem(hwnd,IDC_LIST_PATH),path);
-            SHGetSpecialFolderPath(NULL,path,CSIDL_COMMON_PROGRAMS,0);
+
+            SHGetSpecialFolderPath(NULL,path,CSIDL_COMMON_STARTMENU,0);
             quickey_addfilesfrompath(path,_T("*.lnk"),1);
-            //ListBox_AddString(GetDlgItem(hwnd,IDC_LIST_PATH),path);
+
             UpdateListView(GetDlgItem(GetPageHandle(IDD_DIALOG_FILES),IDC_LIST_FILES));
             hCursor=LoadCursor(NULL,IDC_ARROW);
             SetCursor(hCursor);

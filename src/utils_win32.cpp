@@ -58,7 +58,7 @@ void ErrLook(HWND hWnd,const TCHAR *title,const TCHAR *cmdString)
 /*
  *  Use debugview to check output message.
  */
-bool _trace(TCHAR *format, ...)
+bool _trace(const TCHAR *format, ...)
 {
    TCHAR buffer[MAX_BUFFER];
    va_list argptr;
