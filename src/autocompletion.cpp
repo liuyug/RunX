@@ -7,6 +7,7 @@
 #include "runit.h"
 #include "quickey.h"
 #include "autocompletion.h"
+#include "utils_win32.h"
 
 WNDPROC oldAutoCompletionWndProc;
 
