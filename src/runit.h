@@ -24,4 +24,7 @@ void ShowAbout(HWND hWnd);
 void ShowHelp(HWND hWnd);
 void ShowConfig(HWND hWnd);
 
+inline int max ( int a, int b ) { return (a) > (b) ? (a) : (b); };
+inline int min ( int a, int b ) { return (a) < (b) ? (a) : (b); };
+
 #endif // _RUNIT_H_
