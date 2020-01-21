@@ -39,7 +39,7 @@ LRESULT CALLBACK AutoCompletionWindowWndProc(HWND hwnd, UINT message, WPARAM wPa
         break;
     case WM_RUNIT_ACNOTIFY_TEXT:
         while(ListBox_DeleteString(hwnd,0)>0);
-        _tcscpy_s(input,(TCHAR *)lParam);
+        _tcscpy_s(input,MAX_BUFFER,(TCHAR *)lParam);
         if(input[0]!=('\0')) {
             quickey_listbox_search(input,hwnd);
             ListBox_SetCurSel(hwnd,0);

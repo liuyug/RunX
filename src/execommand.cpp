@@ -17,7 +17,7 @@ void ExecWindowCommand(HWND hWnd,const TCHAR *op,const TCHAR *cmdString)
     TCHAR cmd[MAX_BUFFER],param[MAX_BUFFER];
     TCHAR *space,*quote;
     TCHAR message[MAX_BUFFER];
-    _tcscpy_s(cmd,cmdString);
+    _tcscpy_s(cmd,MAX_BUFFER,cmdString);
     trim(cmd,LEFT,_T(" \t"));
     // parse command with parameter
     param[0]=_T('\0');
@@ -26,22 +26,22 @@ void ExecWindowCommand(HWND hWnd,const TCHAR *op,const TCHAR *cmdString)
         quote++;    // keep '"'
         if(*quote==_T(' ')){    // split command with delimiter ' '
             *quote++=_T('\0');
-            _tcscpy_s(param,quote);
+            _tcscpy_s(param,MAX_BUFFER,quote);
         }
     }else if((space=_tcschr(cmd,_T(' ')))!=NULL){
         *space++=_T('\0');
-        _tcscpy_s(param,space);
+        _tcscpy_s(param,MAX_BUFFER,space);
     }
     // console app
     if(ExecConsoleApp>0&&IsConsoleApp(cmd)>0){
-        _stprintf_s(message,_T("/k \"%s\" %s"),cmd,param);
-        _tcscpy_s(cmd,_T("cmd.exe"));
-        _tcscpy_s(param,message);
+        _stprintf_s(message,MAX_BUFFER,_T("/k \"%s\" %s"),cmd,param);
+        _tcscpy_s(cmd,MAX_BUFFER,_T("cmd.exe"));
+        _tcscpy_s(param,MAX_BUFFER,message);
     }
     debug_output(_T("SHEXEC:%s,%s,%s\n"),op,cmd,param);
     int ret=PtrToInt(ShellExecute(NULL,op,cmd,param,_T(""),SW_SHOWNORMAL));
     if(ret<=32){
-        _stprintf_s(message,_T("%s\n\n%s"),cmdString,GetWin32ErrorMessage(0));
+        _stprintf_s(message,MAX_BUFFER,_T("%s\n\n%s"),cmdString,GetWin32ErrorMessage(0));
         MessageBox(hWnd,message,szTitle,MB_ICONERROR|MB_OK);
         //debug_errmsg(_T("ShellExecute"));
     }
@@ -72,18 +72,18 @@ void ExecAppCommand(HWND hWnd,const TCHAR *cmdString)
         ExitWindowsEx(EWX_REBOOT|EWX_FORCE,SHTDN_REASON_FLAG_PLANNED);
     }else if(_tcsnicmp(cmdString,_T("/eject "),7)==0){
         if(EjectDisk(cmdString+7)==0){
-            _tcscpy_s(shellcmd,_T("Please remove your disk or cdrom: "));
-            _tcscat_s(shellcmd,cmdString+7);
+            _tcscpy_s(shellcmd,MAX_BUFFER,_T("Please remove your disk or cdrom: "));
+            _tcscat_s(shellcmd,MAX_BUFFER,cmdString+7);
             MessageBox(hWnd,shellcmd,szTitle,MB_ICONINFORMATION|MB_OK);
         }else{
-            _tcscpy_s(shellcmd,_T("Can't remove the disk or cdrom: "));
-            _tcscat_s(shellcmd,cmdString+7);
+            _tcscpy_s(shellcmd,MAX_BUFFER,_T("Can't remove the disk or cdrom: "));
+            _tcscat_s(shellcmd,MAX_BUFFER,cmdString+7);
             MessageBox(hWnd,shellcmd,szTitle,MB_ICONWARNING|MB_OK);
         }
     }else if(_tcsicmp(cmdString,_T("/edithosts"))==0){
-        _tcscpy_s(shellcmd,_T("notepad "));
+        _tcscpy_s(shellcmd,MAX_BUFFER,_T("notepad "));
         SHGetSpecialFolderPath(NULL,shellcmd+_tcslen(shellcmd),CSIDL_SYSTEM,0);
-        _tcscat_s(shellcmd,_T("\\drivers\\etc\\hosts"));
+        _tcscat_s(shellcmd,MAX_BUFFER,_T("\\drivers\\etc\\hosts"));
         ExecWindowCommand(NULL,_T("RunAs"),shellcmd);
     }else if(_tcsnicmp(cmdString,_T("/url "),5)==0){
         ExecWindowCommand(NULL,_T("open"),cmdString+5);
@@ -92,8 +92,8 @@ void ExecAppCommand(HWND hWnd,const TCHAR *cmdString)
     }else if(_tcsicmp(cmdString,_T("/runscreensaver"))==0){
         RunScreenSaver(hWnd);
     }else{
-        _tcscpy_s(shellcmd,_T("Can't find command: "));
-        _tcscat_s(shellcmd,cmdString);
+        _tcscpy_s(shellcmd,MAX_BUFFER,_T("Can't find command: "));
+        _tcscat_s(shellcmd,MAX_BUFFER,cmdString);
         MessageBox(hWnd,shellcmd,szTitle,MB_ICONWARNING|MB_OK);
     }
 
@@ -102,21 +102,21 @@ void ExecAppCommand(HWND hWnd,const TCHAR *cmdString)
 void ExecNetShare(HWND hWnd,const TCHAR *cmdString)
 {
     TCHAR szNetShare[MAX_BUFFER];
-    _tcscpy_s(szNetShare,cmdString);
+    _tcscpy_s(szNetShare,MAX_BUFFER,cmdString);
     NETRESOURCE ns;
     memset(&ns,0,sizeof(ns));
     ns.dwType=RESOURCETYPE_ANY;
     ns.lpRemoteName=szNetShare;
     if(WNetAddConnection2(&ns,NULL,NULL,CONNECT_INTERACTIVE)!=NO_ERROR) {
         debug_errmsg(_T("WNetAddConnection2"),GetWin32ErrorMessage(0));
-        _stprintf_s(szNetShare,_T("%s\n\n%s"),cmdString,GetWin32ErrorMessage(0));
+        _stprintf_s(szNetShare,MAX_BUFFER,_T("%s\n\n%s"),cmdString,GetWin32ErrorMessage(0));
         MessageBox(hWnd,szNetShare,szTitle,MB_ICONERROR|MB_OK);
         return;
     };
 
     int ret=PtrToInt(ShellExecute(NULL,_T("open"),cmdString,_T(""),_T(""),SW_SHOWNORMAL));
     if(ret<=32){
-        _stprintf_s(szNetShare,_T("%s\n\n%s"),cmdString,GetWin32ErrorMessage(0));
+        _stprintf_s(szNetShare,MAX_BUFFER,_T("%s\n\n%s"),cmdString,GetWin32ErrorMessage(0));
         MessageBox(hWnd,szNetShare,szTitle,MB_ICONERROR|MB_OK);
     }
 }

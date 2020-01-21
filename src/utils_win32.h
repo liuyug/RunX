@@ -13,6 +13,37 @@
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif
 
+#if (defined(__MINGW__) || defined(__MINGW32__))
+#include <wchar.h>
+static inline int wcscpy_s(wchar_t *dest, size_t n, const wchar_t *src)
+{
+    int len;
+    len = wcslen(src) + 1;
+    if (len < n) {
+        wcscpy(dest, src);
+        return 0;
+    }
+    return 1;
+}
+
+static inline int wcscat_s(wchar_t *dest, size_t n, const wchar_t *src)
+{
+    int len;
+    len = wcslen(src) + 1;
+    if (len < n) {
+        wcscat(dest, src);
+        return 0;
+    }
+    return 1;
+}
+
+#define _tcscpy_s wcscpy_s
+#define _tcscat_s wcscat_s
+#define _stprintf_s swprintf
+#define _vstprintf_s vswprintf
+#define _tcscmp wcscmp
+#endif
+
 bool _trace(const TCHAR *format, ...);
 #define debug_output                _trace
 #ifdef NDEBUG

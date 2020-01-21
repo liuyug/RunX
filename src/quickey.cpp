@@ -29,7 +29,7 @@ priority INTEGER            \
 
     //SHGetSpecialFolderPath(hwnd,path,CSIDL_LOCAL_APPDATA,0);
     GetModuleFileName(NULL,dbname,MAX_BUFFER);
-    _tcscat_s(dbname,_T(".db"));
+    _tcscat_s(dbname,MAX_BUFFER,_T(".db"));
     db=sqldb_init(dbname);
     if(sqldb_exec(db,keymap_check,NULL,0,NULL,NULL)!=0) {
         sqldb_exec(db,keymap_create,NULL,0,NULL,NULL);
@@ -61,7 +61,7 @@ int quickey_deletesetting(const TCHAR *key, const TCHAR *value)
 {
     const TCHAR *sql_fmt=_T("delete from setting where key='%s' and value='%s';");
     TCHAR sql[MAX_BUFFER];
-    _stprintf_s(sql,sql_fmt,key,value);
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,key,value);
     return sqldb_exec(db,sql,NULL,0,NULL,NULL);
 }
 
@@ -70,7 +70,7 @@ int quickey_getsetting(const TCHAR *key,TCHAR value[MAX_BUFFER])
     const TCHAR *sql_fmt=_T("select value from setting where key = '%s' ;");
     TCHAR sql[MAX_BUFFER];
     TCHAR sqlvalue[MAX_BUFFER];
-    _stprintf_s(sql,sql_fmt,key);
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,key);
     int sql_ret=sqldb_exec(db,sql,NULL,1,&sqlvalue,NULL);
     value[0]=_T('\0');
     if(sql_ret==0){
@@ -83,7 +83,7 @@ int quickey_putsetting(const TCHAR *key, const TCHAR *value)
 {
     const TCHAR *sql_fmt_t=_T("insert into setting values('%s','%s');");
     TCHAR sql[MAX_BUFFER];
-    _stprintf_s(sql,sql_fmt_t,key,value);
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt_t,key,value);
     return sqldb_exec(db,sql,NULL,0,NULL,NULL);
 }
 
@@ -93,37 +93,37 @@ int quickey_getsettings()
     TCHAR sql[MAX_BUFFER];
     TCHAR value[MAX_BUFFER];
 
-    _stprintf_s(sql,sql_fmt,_T("ExecAll"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("ExecAll"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     ExecAll=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("ExecConsoleApp"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("ExecConsoleApp"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     ExecConsoleApp=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("AutoStart"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("AutoStart"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     AutoStart=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("EnableDropdown"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("EnableDropdown"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     EnableDropdown=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("DropdownItem"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("DropdownItem"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     DropdownItem=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("EnableCtrlPN"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("EnableCtrlPN"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     EnableCtrlPN=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("EnableCtrlKJ"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("EnableCtrlKJ"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     EnableCtrlKJ=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("EnableUPDOWN"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("EnableUPDOWN"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     EnableUPDOWN=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("EnableTAB"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("EnableTAB"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     EnableTAB=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("HK_Mod"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("HK_Mod"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     HK_Mod=_ttoi(value);
-    _stprintf_s(sql,sql_fmt,_T("HK_Key"));
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,_T("HK_Key"));
     sqldb_exec(db,sql,NULL,1,&value,NULL);
     HK_Key=_ttoi(value);
     return 0;
@@ -133,27 +133,27 @@ int quickey_putsettings()
     const TCHAR *insertfmt_i=_T("insert into setting values('%s',%d);");
     //const TCHAR *insertfmt_t=_T("insert into setting values('%s','%s');");
     TCHAR sql[MAX_BUFFER];
-    _stprintf_s(sql,insertfmt_i,_T("ExecAll"),ExecAll);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("ExecAll"),ExecAll);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("ExecConsoleApp"),ExecConsoleApp);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("ExecConsoleApp"),ExecConsoleApp);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("AutoStart"),AutoStart);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("AutoStart"),AutoStart);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("EnableDropdown"),EnableDropdown);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("EnableDropdown"),EnableDropdown);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("DropdownItem"),DropdownItem);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("DropdownItem"),DropdownItem);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("EnableCtrlPN"),EnableCtrlPN);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("EnableCtrlPN"),EnableCtrlPN);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("EnableCtrlKJ"),EnableCtrlKJ);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("EnableCtrlKJ"),EnableCtrlKJ);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("EnableUPDOWN"),EnableUPDOWN);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("EnableUPDOWN"),EnableUPDOWN);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("EnableTAB"),EnableTAB);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("EnableTAB"),EnableTAB);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("HK_Mod"),HK_Mod);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("HK_Mod"),HK_Mod);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
-    _stprintf_s(sql,insertfmt_i,_T("HK_Key"),HK_Key);
+    _stprintf_s(sql,MAX_BUFFER,insertfmt_i,_T("HK_Key"),HK_Key);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
     return 0;
 }
@@ -234,9 +234,9 @@ int quickey_addfile(const TCHAR *path,const TCHAR *key)
     if(key==NULL) {
         quickey_genkey(path,key2);
     } else {
-        _tcscpy_s(key2,key);
+        _tcscpy_s(key2,MAX_BUFFER,key);
     }
-    _stprintf_s(sql_insert,insertfmt,key2,path,100);
+    _stprintf_s(sql_insert,MAX_BUFFER,insertfmt,key2,path,100);
     sqldb_exec(db,sql_insert,NULL,0,NULL,NULL);
     return 0;
 }
@@ -244,7 +244,7 @@ int quickey_deletefile(const TCHAR *key)
 {
     const TCHAR *szSQLFormat=_T("delete from keymap where key = '%s';");
     TCHAR sql[MAX_BUFFER];
-    _stprintf_s(sql,szSQLFormat,key);
+    _stprintf_s(sql,MAX_BUFFER,szSQLFormat,key);
     sqldb_exec(db,sql,NULL,0,NULL,NULL);
     return 0;
 
@@ -265,7 +265,7 @@ int quickey_addfilesfrompath(const TCHAR *path,const TCHAR *filters,int recursiv
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
     TCHAR childpath[MAX_PATH];
-    _stprintf_s(childpath,_T("%s\\*"),path);
+    _stprintf_s(childpath,MAX_BUFFER,_T("%s\\*"),path);
     hFind = FindFirstFile(childpath, &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE) {
         debug_output(_T("%s"),childpath);
@@ -278,13 +278,13 @@ int quickey_addfilesfrompath(const TCHAR *path,const TCHAR *filters,int recursiv
                         _tcscmp(FindFileData.cFileName,_T("."))!=0&&
                         _tcscmp(FindFileData.cFileName,_T(".."))!=0
                   ) {   // scan child path
-                    _stprintf_s(childpath,_T("%s\\%s"),path,FindFileData.cFileName);
+                    _stprintf_s(childpath,MAX_BUFFER,_T("%s\\%s"),path,FindFileData.cFileName);
                     //debug_output(_T("+ %s\n"),childpath);
                     quickey_addfilesfrompath(childpath,filters,recursive);
                 }
             } else if(quickey_filters(FindFileData.cFileName,filters)==0) {
                 // muse use quote "", or sql statement will raise error
-                _stprintf_s(childpath,_T("\"%s\\%s\""),path,FindFileData.cFileName);
+                _stprintf_s(childpath,MAX_BUFFER,_T("\"%s\\%s\""),path,FindFileData.cFileName);
                 debug_output(_T("+ %s\n"),childpath);
                 quickey_addfile(childpath);
             } else {
@@ -332,7 +332,7 @@ int quickey_listbox_search(const TCHAR *filter,HWND hListBox)
         return 0;
     }
 
-    _stprintf_s(sql,sql_fmt,filter);
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,filter);
 
     sqldb_exec(db,sql,quickey_listboxcallback,2,record,hListBox);
     return 0;
@@ -357,7 +357,7 @@ int quickey_listview_update(const TCHAR *filter,HWND hListView)
     const TCHAR *sql_fmt=_T("select key,path,priority from keymap where key like '%s%%' order by key;");
     TCHAR sql[MAX_BUFFER];
     TCHAR record[3][MAX_BUFFER];
-    _stprintf_s(sql,sql_fmt,filter);
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,filter);
 
     sqldb_exec(db,sql,quickey_listviewcallback,3,record,hListView);
     return 0;
@@ -372,7 +372,7 @@ int quickey_getexec(const TCHAR *key,TCHAR path[][MAX_BUFFER])
         return 0;
     }
 
-    _stprintf_s(sql,sql_fmt,key);
+    _stprintf_s(sql,MAX_BUFFER,sql_fmt,key);
     path[0][0]=_T('\0');
     sqldb_exec(db,sql,NULL,1,path,NULL);
     debug_output(_T("quickey path:%s\n"),*path);

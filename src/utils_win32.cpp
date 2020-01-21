@@ -51,7 +51,7 @@ TCHAR * GetWin32ErrorMessage(unsigned long errcode)
 void ErrLook(HWND hWnd,const TCHAR *title,const TCHAR *cmdString)
 {
     TCHAR message[MAX_BUFFER];
-    _stprintf_s(message,_T("Error code: %s\n\n%s"),cmdString,GetWin32ErrorMessage(_ttol(cmdString)));
+    _stprintf_s(message,MAX_BUFFER,_T("Error code: %s\n\n%s"),cmdString,GetWin32ErrorMessage(_ttol(cmdString)));
     MessageBox(hWnd,message,title,MB_ICONINFORMATION|MB_OK);
 }
 
@@ -63,7 +63,7 @@ bool _trace(const TCHAR *format, ...)
    TCHAR buffer[MAX_BUFFER];
    va_list argptr;
    va_start(argptr, format);
-   _vstprintf_s(buffer, format, argptr);
+   _vstprintf_s(buffer, MAX_BUFFER, format, argptr);
    va_end(argptr);
    OutputDebugString(buffer);
    return true;

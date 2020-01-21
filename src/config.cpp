@@ -73,7 +73,9 @@ void DoDropdown()
 void DoRegisterHotKey()
 {
     UnregisterHotKey(GetParent(hInput),ID_HOTKEY);
-    RegisterHotKey(GetParent(hInput),ID_HOTKEY,HK_Mod,HK_Key);
+    BOOL ret = RegisterHotKey(GetParent(hInput),ID_HOTKEY,HK_Mod,HK_Key);
+    if (ret != TRUE)
+        debug_error(GetWin32ErrorMessage(GetLastError()));
 }
 void DoAutoStart()
 {
@@ -221,7 +223,7 @@ LRESULT CALLBACK HotkeyWindowWndProc(HWND hwnd, UINT message, WPARAM wParam, LPA
             HK_Key=wParam;
             GetKeyNameText(lParam,key,MAX_BUFFER);
             SetWindowText(hwnd,key);
-            _stprintf_s(key,_T("%d"),HK_Key);
+            _stprintf_s(key,MAX_BUFFER,_T("%d"),HK_Key);
             SetWindowText(GetDlgItem(GetParent(hwnd),IDC_EDIT_HOTKEY_DEC),key);
         }
         return 0;
@@ -243,7 +245,7 @@ INT_PTR CALLBACK DlgHotkeyWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
         GetKeyNameText(MapVirtualKey(HK_Key,MAPVK_VK_TO_VSC)<<16,key,MAX_BUFFER);
 
         SetWindowText(GetDlgItem(hwnd,IDC_EDIT_HOTKEY),key);
-        _stprintf_s(key,_T("%d"),HK_Key);
+        _stprintf_s(key,MAX_BUFFER,_T("%d"),HK_Key);
         SetWindowText(GetDlgItem(hwnd,IDC_EDIT_HOTKEY_DEC),key);
         Button_SetCheck(GetDlgItem(hwnd,IDC_CHECKBOX_CTRL),HK_Mod&MOD_CONTROL?BST_CHECKED:BST_UNCHECKED);
         Button_SetCheck(GetDlgItem(hwnd,IDC_CHECKBOX_ALT),HK_Mod&MOD_ALT?BST_CHECKED:BST_UNCHECKED);
@@ -388,7 +390,7 @@ INT_PTR CALLBACK DlgPathsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
             SetCursor(hCursor);
 
             SHGetSpecialFolderPath(NULL,path,CSIDL_APPDATA,0);
-            _tcscat_s(path,_T("\\Microsoft\\Internet Explorer\\Quick Launch"));
+            _tcscat_s(path,MAX_BUFFER,_T("\\Microsoft\\Internet Explorer\\Quick Launch"));
             quickey_addfilesfrompath(path,_T("*.lnk"),1);
 
             SHGetSpecialFolderPath(NULL,path,CSIDL_STARTMENU,0);
@@ -412,7 +414,7 @@ INT_PTR CALLBACK DlgPathsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
         case IDC_BUTTON_BROWSEFILE:
 			path[0] = _T('"');
             GetFilesDialog(hwnd, path + 1, MAX_BUFFER);
-			_tcscat_s(path, _T("\""));
+			_tcscat_s(path,MAX_BUFFER, _T("\""));
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_SINGLEFILE),path);
             quickey_genkey(path,key);
             Edit_SetText(GetDlgItem(hwnd,IDC_EDIT_SINGLEKEY),key);

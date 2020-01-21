@@ -43,7 +43,7 @@ int sqldb_exec(PVOID vdb,const TCHAR * sql,sqldb_callback *callback,int cols,TCH
     while((sql_ret=_sqlite3_step(sql_statement))==SQLITE_ROW){
         if(_sqlite3_column_count(sql_statement)<=cols){
             for(int i=0;i<_sqlite3_column_count(sql_statement);i++){
-                _tcscpy_s(record[i],(TCHAR*)_sqlite3_column_text(sql_statement,i));
+                _tcscpy_s(record[i],MAX_BUFFER,(TCHAR*)_sqlite3_column_text(sql_statement,i));
                 debug_log(record[i]);
             }
             if(callback!=NULL)

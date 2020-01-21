@@ -64,9 +64,9 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     MSG messages;            /* Here messages to the application are saved */
     WNDCLASSEX wincl;        /* Data structure for the windowclass */
 #ifdef __WIN64__
-    _stprintf_s(szTitle,_T("RunIt x64 v%s"),version);
+    _stprintf_s(szTitle,MAX_BUFFER,_T("RunIt x64 v%s"),version);
 #else
-    _stprintf_s(szTitle,_T("RunIt v%s"),version);
+    _stprintf_s(szTitle,MAX_BUFFER,_T("RunIt v%s"),version);
 #endif
     debug_output(szTitle);
     ExecAll=1;
@@ -102,7 +102,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     logFont.lfClipPrecision=CLIP_DEFAULT_PRECIS;
     logFont.lfQuality=DEFAULT_QUALITY;
     logFont.lfPitchAndFamily=DEFAULT_PITCH|FF_DONTCARE<<4;
-    _tcscpy_s(logFont.lfFaceName,_T("Ms Shell Dlg"));
+    _tcscpy_s(logFont.lfFaceName,MAX_BUFFER,_T("Ms Shell Dlg"));
     hRunitFont=CreateFontIndirect(&logFont);
 
     INITCOMMONCONTROLSEX icce;
@@ -204,7 +204,7 @@ int ShowTrayMenu(HWND hWnd)
 void ShowAbout(HWND hWnd)
 {
     TCHAR message[MAX_BUFFER];
-    _stprintf_s(message,_T("%s\nCopyright (C) 2012 Liu Yugang <liuyug@gmail.com>"),szTitle);
+    _stprintf_s(message,MAX_BUFFER,_T("%s\nCopyright (C) 2012 Liu Yugang <liuyug@gmail.com>"),szTitle);
     MessageBox(hWnd,message,szTitle,MB_ICONINFORMATION|MB_OK);
 }
 void ShowConfig(HWND hWnd)
@@ -238,7 +238,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         nifData.uID=ID_HOTKEY;
         nifData.uCallbackMessage=WM_RUNIT_TRAYNOTIFY;
         nifData.hIcon=LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON_APP));
-        _tcscpy_s(nifData.szTip,szTitle);
+        _tcscpy_s(nifData.szTip,MAX_BUFFER,szTitle);
         nifData.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
         Shell_NotifyIcon(NIM_ADD,&nifData);
         break;
@@ -304,19 +304,19 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 if(ExecAll>0) {
 #ifdef SEARCHPATH
                     if(pszInputKey[0]==_T('\\')) {  // network share
-                        _tcscpy_s(cmdString,pszInputKey);
+                        _tcscpy_s(cmdString,MAX_BUFFER,pszInputKey);
                     } else if(SearchPath(NULL,pszInputKey,_T(".exe"),MAX_BUFFER,cmdString,NULL)==0) {
                         debug_errmsg(_T("SearchPath"),GetWin32ErrorMessage(0));
-                        _stprintf_s(cmdString,_T("Can't find file: \"%s\""),pszInputKey);
+                        _stprintf_s(cmdString,MAX_BUFFER,_T("Can't find file: \"%s\""),pszInputKey);
                         MessageBox(hwnd,cmdString,szTitle,MB_ICONWARNING|MB_OK);
                         ShowWindow(hAutoCompletion,SW_RESTORE);
                         return 0;
                     };
 #else
-                    _tcscpy_s(cmdString,pszInputKey);
+                    _tcscpy_s(cmdString,MAX_BUFFER,pszInputKey);
 #endif
                 } else {
-                    _stprintf_s(cmdString,_T("Can't find file: \"%s\""),pszInputKey);
+                    _stprintf_s(cmdString,MAX_BUFFER,_T("Can't find file: \"%s\""),pszInputKey);
                     MessageBox(hwnd,cmdString,szTitle,MB_ICONWARNING|MB_OK);
                     ShowWindow(hAutoCompletion,SW_RESTORE);
                     return 0;
@@ -326,7 +326,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 #ifdef SEARCHPATH
             SearchPath(NULL,pszInputKey,_T(".exe"),MAX_BUFFER,cmdString,NULL);
 #else
-            _tcscpy_s(cmdString,pszInputKey);
+            _tcscpy_s(cmdString,MAX_BUFFER,pszInputKey);
 #endif
         }
         ShowWindow(hwnd,SW_HIDE);

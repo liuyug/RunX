@@ -112,9 +112,10 @@ LRESULT CALLBACK InputWindowWndProc(HWND hwnd, UINT message, WPARAM wParam, LPAR
             return 1;
         default:
             if(wParam>31||wParam==0x08){  // only received display characters and 0x08 (BS)
-                //debug_output(_T("char :0x%2x\n"),(wParam));
+                // debug_output(_T("char :0x%2x\n"),(wParam));
                 CallWindowProc(oldInputWndProc, hwnd, message,wParam, lParam);
                 Edit_GetText(hwnd,cmdString,MAX_BUFFER);
+                // debug_output(_T("cmd : %s\n"),(cmdString));
                 if(EnableDropdown>0){
                     SendMessage(hAutoCompletion,WM_RUNIT_ACNOTIFY_TEXT,_tcslen(cmdString),(LPARAM)cmdString);
                 }
