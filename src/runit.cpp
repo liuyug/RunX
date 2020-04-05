@@ -50,7 +50,7 @@ LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
 
 /*  Make the class name into a global variable  */
-const TCHAR * szClassName = _T("RunIt");
+const TCHAR * szClassName = _T("RunX");
 TCHAR szTitle[256];
 
 
@@ -64,9 +64,9 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     MSG messages;            /* Here messages to the application are saved */
     WNDCLASSEX wincl;        /* Data structure for the windowclass */
 #ifdef __WIN64__
-    _stprintf_s(szTitle,MAX_BUFFER,_T("RunIt x64 v%s"),version);
+    _stprintf_s(szTitle,MAX_BUFFER,_T("RunX x64 v%s"),version);
 #else
-    _stprintf_s(szTitle,MAX_BUFFER,_T("RunIt v%s"),version);
+    _stprintf_s(szTitle,MAX_BUFFER,_T("RunX v%s"),version);
 #endif
     debug_output(szTitle);
     ExecAll=1;

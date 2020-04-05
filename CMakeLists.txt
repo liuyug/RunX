@@ -2,9 +2,9 @@
 cmake_minimum_required(VERSION 2.6)
 
 
-project(RunIt)
+project(RunX)
 
-set(runit_exe RunIt)
+set(runx_exe RunX)
 
 include_directories(third_pkgs/sqlite3)
 
@@ -30,10 +30,10 @@ add_definitions(-D_UNICODE -DUNICODE)
 # add_definitions(-DNDEBUG)
 
 
-add_executable(${runit_exe} WIN32
+add_executable(${runx_exe} WIN32
     ${sources} ${headers}
     ${sqlite3_sources} ${sqlite3_headers}
     ${resources}
     )
 
-target_link_libraries(${runit_exe} mpr comctl32 Setupapi)
+target_link_libraries(${runx_exe} mpr comctl32 Setupapi)

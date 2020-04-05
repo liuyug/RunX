@@ -1,7 +1,7 @@
 =========
-RunIt
+RunX
 =========
-.. image:: src/runit.ico
+.. image:: src/runx.ico
 
 Quick run window command liking window "run", but more features.
 
@@ -19,7 +19,7 @@ Run
 ======
 ::
 
-    runit.exe
+    runx.exe
 
 Usage
 =======
