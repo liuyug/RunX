@@ -4,7 +4,7 @@
 #include <windowsx.h>
 
 #include "global.h"
-#include "runit.h"
+#include "runx.h"
 #include "quickey.h"
 #include "autocompletion.h"
 #include "utils_win32.h"

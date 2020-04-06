@@ -16,7 +16,7 @@
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 IDR_MENU_TRAY MENU
 {
-    POPUP "RunIt"
+    POPUP "RunX"
     {
         MENUITEM "Settings", IDM_SETTINGS
         MENUITEM SEPARATOR
@@ -154,7 +154,7 @@ IDI_ICON_APP       ICON           "runx.ico"
 // Manifest resources
 //
 #ifdef __WIN64__
-1                  RT_MANIFEST    "RunIt.exe.ManifestX64"
+1                  RT_MANIFEST    "RunX.exe.ManifestX64"
 #else
-1                  RT_MANIFEST    "RunIt.exe.Manifest"
+1                  RT_MANIFEST    "RunX.exe.Manifest"
 #endif

@@ -27,7 +27,7 @@ source_group("Resource files" FILES ${resources})
 # unicode
 add_definitions(-D_UNICODE -DUNICODE)
 # debug
-# add_definitions(-DNDEBUG)
+add_definitions(-DNDEBUG)
 
 
 add_executable(${runx_exe} WIN32

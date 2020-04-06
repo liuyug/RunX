@@ -6,7 +6,7 @@
 #include <commctrl.h>
 
 #include "global.h"
-#include "runit.h"
+#include "runx.h"
 #include "resource.h"
 #include "input.h"
 #include "quickey.h"
@@ -18,9 +18,9 @@
 #define version _T("1.2.2")
 /*
 #ifdef __WIN64__
-1                  RT_MANIFEST    "RunIt.exe.ManifestX64"
+1                  RT_MANIFEST    "RunX.exe.ManifestX64"
 #else
-1                  RT_MANIFEST    "RunIt.exe.Manifest"
+1                  RT_MANIFEST    "RunX.exe.Manifest"
 #endif
 */
 

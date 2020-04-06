@@ -60,6 +60,18 @@ void ErrLook(HWND hWnd,const TCHAR *title,const TCHAR *cmdString)
  */
 bool _trace(const TCHAR *format, ...)
 {
+#ifndef NDEBUG
+   TCHAR buffer[MAX_BUFFER];
+   va_list argptr;
+   va_start(argptr, format);
+   _vstprintf_s(buffer, MAX_BUFFER, format, argptr);
+   va_end(argptr);
+   OutputDebugString(buffer);
+#endif
+   return true;
+}
+bool _error(const TCHAR *format, ...)
+{
    TCHAR buffer[MAX_BUFFER];
    va_list argptr;
    va_start(argptr, format);
@@ -68,6 +80,7 @@ bool _trace(const TCHAR *format, ...)
    OutputDebugString(buffer);
    return true;
 }
+
 
 SIZE GetFontSize(HFONT hFont)
 {
@@ -448,6 +461,10 @@ int EjectDisk(const TCHAR * drive)
         return EjectMedia(drive);
     } else if(nDriveType==DRIVE_REMOVABLE) {
         return EjectStorage(drive);
+    } else if(nDriveType==DRIVE_FIXED) {
+        debug_error(L"TODO: check External HDD!!!");
+        MessageBox(NULL, L"TODO: check External HDD!!!", L"TODO", MB_ICONINFORMATION|MB_OK);
+        return 0;
     }
     return 1;
 }

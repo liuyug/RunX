@@ -1,7 +1,7 @@
 
 #include <windows.h>
 
-#include "runit.h"
+#include "runx.h"
 #include "resource.h"
 #include "informationbox.h"
 

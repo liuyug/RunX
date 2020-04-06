@@ -5,7 +5,7 @@
 #include <commctrl.h>
 
 #include "global.h"
-#include "runit.h"
+#include "runx.h"
 #include "resource.h"
 #include "config.h"
 #include "quickey.h"

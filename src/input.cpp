@@ -7,7 +7,7 @@
 
 #include "global.h"
 #include "resource.h"
-#include "runit.h"
+#include "runx.h"
 #include "input.h"
 #include "autocompletion.h"
 #include "quickey.h"
@@ -16,8 +16,8 @@
 #define EM_SETCUEBANNER 0x1501
 
 const TCHAR *Tips[]={
-    _T("RunIt  -  TIP: Ctrl + U to erase characters before caret"),
-    _T("RunIt  -  TIP: '/' to call internal command"),
+    _T("RunX  -  TIP: Ctrl + U to erase characters before caret"),
+    _T("RunX  -  TIP: '/' to call internal command"),
     NULL
 };
 

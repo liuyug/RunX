@@ -6,7 +6,7 @@
 #include <commctrl.h>
 
 #include "global.h"
-#include "runit.h"
+#include "runx.h"
 #include "autocompletion.h"
 #include "sqldb.h"
 #include "quickey.h"

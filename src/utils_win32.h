@@ -42,20 +42,15 @@ static inline int wcscat_s(wchar_t *dest, size_t n, const wchar_t *src)
 #define _stprintf_s swprintf
 #define _vstprintf_s vswprintf
 #define _tcscmp wcscmp
-#endif
 
 bool _trace(const TCHAR *format, ...);
-#define debug_output                _trace
-#ifdef NDEBUG
-#define debug                       ((void)0)
-#define debug_log(msg)              ((void)0)
-#define debug_error(x)              ((void)0)
-#define debug_errmsg(desc,errmsg)   ((void)0)
-#else
 #define debug                       _trace
+#define debug_output                _trace
 #define debug_log(msg)              _trace(_T("%s\n"),msg)
-#define debug_error(desc)           _trace(_T("%s:%s\n"),__FUNCTION__,desc)
-#define debug_errmsg(desc,errmsg)   _trace(_T("%s:%s - %s\n"),__FUNCTION__,desc,errmsg)
+
+bool _error(const TCHAR *format, ...);
+#define debug_error(desc)           _error(_T("ERROR: %s\n"), desc)
+#define debug_errmsg(desc,errmsg)   _error(_T("ERROR: %s - %s\n"), desc,errmsg)
 #endif
 
 

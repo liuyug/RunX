@@ -5,7 +5,7 @@
 #include <shlobj.h>
 
 #include "global.h"
-#include "runit.h"
+#include "runx.h"
 #include "execommand.h"
 #include "resource.h"
 #include "informationbox.h"
@@ -71,11 +71,7 @@ void ExecAppCommand(HWND hWnd,const TCHAR *cmdString)
         RequestPrivilege(SE_SHUTDOWN_NAME);
         ExitWindowsEx(EWX_REBOOT|EWX_FORCE,SHTDN_REASON_FLAG_PLANNED);
     }else if(_tcsnicmp(cmdString,_T("/eject "),7)==0){
-        if(EjectDisk(cmdString+7)==0){
-            _tcscpy_s(shellcmd,MAX_BUFFER,_T("Please remove your disk or cdrom: "));
-            _tcscat_s(shellcmd,MAX_BUFFER,cmdString+7);
-            MessageBox(hWnd,shellcmd,szTitle,MB_ICONINFORMATION|MB_OK);
-        }else{
+        if(EjectDisk(cmdString+7)!=0){
             _tcscpy_s(shellcmd,MAX_BUFFER,_T("Can't remove the disk or cdrom: "));
             _tcscat_s(shellcmd,MAX_BUFFER,cmdString+7);
             MessageBox(hWnd,shellcmd,szTitle,MB_ICONWARNING|MB_OK);
