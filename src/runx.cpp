@@ -15,7 +15,7 @@
 #include "config.h"
 #include "utils_win32.h"
 
-#define version _T("1.2.2")
+#define version _T("1.2.3")
 /*
 #ifdef __WIN64__
 1                  RT_MANIFEST    "RunX.exe.ManifestX64"

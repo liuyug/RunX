@@ -444,27 +444,115 @@ int EjectStorage(const TCHAR * drive)
     return 0;
 }
 
+/** \brief get bus type of drive
+ *
+ * \param drive u or u:
+ * \param type return bus type
+ * \return 0 if success, other if failed
+ *
+ * */
+int getBusType(const TCHAR * drive, int * type)
+{
+    TCHAR  VolumeName[] = _T("\\\\.\\?:");
+    VolumeName[4] = drive[0];
+    HANDLE hDrv = CreateFile(VolumeName,
+                             GENERIC_READ|GENERIC_WRITE,
+                             FILE_SHARE_READ | // share mode
+                             FILE_SHARE_WRITE,
+                             NULL,             // default security attributes
+                             OPEN_EXISTING,    // disposition
+                             0,                // file attributes
+                             NULL);
+
+    if (hDrv == INVALID_HANDLE_VALUE) {
+        debug_errmsg(VolumeName, GetWin32ErrorMessage(0));
+        return 1;
+    }
+    DWORD count;
+    int  Result;
+
+    typedef struct _STORAGE_PROPERTY_QUERY {
+    STORAGE_PROPERTY_ID PropertyId;
+    STORAGE_QUERY_TYPE  QueryType;
+    BYTE                AdditionalParameters[1];
+    } STORAGE_PROPERTY_QUERY, *PSTORAGE_PROPERTY_QUERY;
+
+    typedef struct _STORAGE_DESCRIPTOR_HEADER {
+    DWORD Version;
+    DWORD Size;
+    } STORAGE_DESCRIPTOR_HEADER, *PSTORAGE_DESCRIPTOR_HEADER;
+    typedef struct _STORAGE_DEVICE_DESCRIPTOR {
+    DWORD            Version;
+    DWORD            Size;
+    BYTE             DeviceType;
+    BYTE             DeviceTypeModifier;
+    BOOLEAN          RemovableMedia;
+    BOOLEAN          CommandQueueing;
+    DWORD            VendorIdOffset;
+    DWORD            ProductIdOffset;
+    DWORD            ProductRevisionOffset;
+    DWORD            SerialNumberOffset;
+    STORAGE_BUS_TYPE BusType;
+    DWORD            RawPropertiesLength;
+    BYTE             RawDeviceProperties[1];
+    } STORAGE_DEVICE_DESCRIPTOR, *PSTORAGE_DEVICE_DESCRIPTOR;
+
+    STORAGE_DESCRIPTOR_HEADER header;
+    STORAGE_PROPERTY_QUERY query;
+
+    query.PropertyId = StorageDeviceProperty;
+    query.QueryType = PropertyStandardQuery;
+
+    Result=DeviceIoControl(
+            hDrv, IOCTL_STORAGE_QUERY_PROPERTY,
+            &query, sizeof(query),
+            &header, sizeof(header),
+            &count, NULL);
+    if (!Result) {
+        debug_errmsg(VolumeName, GetWin32ErrorMessage(0));
+        return 2;
+    }
+
+    STORAGE_DEVICE_DESCRIPTOR * descriptor =
+        (STORAGE_DEVICE_DESCRIPTOR *)malloc(header.Size);
+    Result=DeviceIoControl(
+            hDrv, IOCTL_STORAGE_QUERY_PROPERTY,
+            &query, sizeof(query),
+            descriptor, header.Size,
+            &count, NULL);
+    if (!Result) {
+        debug_errmsg(VolumeName, GetWin32ErrorMessage(0));
+        return 3;
+    }
+    *type = descriptor->BusType;
+    free(descriptor);
+    CloseHandle(hDrv);
+    return 0;
+}
+
 /** \brief eject disk.
  *
  * \param drive disk drive name, such as "u:" or "u"
  * \return  0 if success, 1 if failed
  *
  */
-
 int EjectDisk(const TCHAR * drive)
 {
-    TCHAR RootPathName[]=_T("?:\\");
+    TCHAR RootPathName[] = _T("?:\\");
     int   nDriveType;
-    RootPathName[0]=drive[0];
-    nDriveType=GetDriveType(RootPathName);
-    if(nDriveType==DRIVE_CDROM) {
+    RootPathName[0] = drive[0];
+    nDriveType = GetDriveType(RootPathName);
+    if (nDriveType == DRIVE_CDROM) {
         return EjectMedia(drive);
-    } else if(nDriveType==DRIVE_REMOVABLE) {
+    } else if (nDriveType == DRIVE_REMOVABLE) {
         return EjectStorage(drive);
-    } else if(nDriveType==DRIVE_FIXED) {
-        debug_error(L"TODO: check External HDD!!!");
-        MessageBox(NULL, L"TODO: check External HDD!!!", L"TODO", MB_ICONINFORMATION|MB_OK);
-        return 0;
+    } else if (nDriveType == DRIVE_FIXED) {
+        int bus_type = 0;
+        getBusType(drive, &bus_type);
+        if (bus_type == BusTypeUsb) {
+            debug(L"eject usb drive %s", drive);
+            return EjectStorage(drive);
+        }
     }
     return 1;
 }

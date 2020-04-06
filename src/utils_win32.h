@@ -49,7 +49,7 @@ bool _trace(const TCHAR *format, ...);
 #define debug_log(msg)              _trace(_T("%s\n"),msg)
 
 bool _error(const TCHAR *format, ...);
-#define debug_error(desc)           _error(_T("ERROR: %s\n"), desc)
+#define debug_error                 _error
 #define debug_errmsg(desc,errmsg)   _error(_T("ERROR: %s - %s\n"), desc,errmsg)
 #endif
 
